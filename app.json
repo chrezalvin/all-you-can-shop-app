@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "uts",
-    "slug": "uts",
+    "name": "allyoucanshop",
+    "slug": "allyoucanshop",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.chrealvin.allyoucanshop"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8c45010f-1a57-4492-a119-b7684b957dee"
+      }
     }
   }
 }
