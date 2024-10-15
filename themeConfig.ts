@@ -20,8 +20,8 @@ export const CombinedDefaultTheme = {
 colors: {
     ...MD3LightTheme.colors,
     ...LightTheme.colors,
-    background: "#f0f0f0",
-    backdrop: "rgb(240, 240, 240)",
+    // background: "#f0f0f0",
+    // backdrop: "rgb(240, 240, 240)",
 }
 };
 
@@ -31,7 +31,7 @@ export const CombinedDarkTheme = {
 colors: {
     ...MD3DarkTheme.colors,
     ...DarkTheme.colors,
-    surface: "#0b214a",
-    backdrop: "#2e3d5a"
+    // surface: "#0b214a",
+    // backdrop: "#2e3d5a"
 }
 };

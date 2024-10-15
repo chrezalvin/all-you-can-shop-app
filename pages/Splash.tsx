@@ -1,13 +1,15 @@
 import { NativeStackNavigationOptions, NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RouteStackParamList } from "@shared";
+import { routeList, RouteStackParamList } from "@shared";
 import AppIcon from "@assets/favicon.svg";
 import { View } from "react-native";
 import styles from "@styles";
 import { useTheme } from "react-native-paper";
 import Animated, {interpolate, interpolateColor, useAnimatedStyle, useSharedValue, withRepeat, withTiming} from "react-native-reanimated";
 import { useEffect } from "react";
+import { PageIndex } from "@libs";
 
-type SplashNavProps = NativeStackScreenProps<RouteStackParamList, "splash">;
+const pageName = routeList.splash;
+type SplashNavProps = NativeStackScreenProps<RouteStackParamList, typeof pageName>;
 
 export function Splash(props: SplashNavProps){
     const theme = useTheme();
@@ -19,7 +21,7 @@ export function Splash(props: SplashNavProps){
         // go to home in 3 seconds
         setTimeout(() => {
             props.navigation.replace("navs");
-        }, 3000);
+        }, 0);
     }, [])
 
     const animatedStyle = useAnimatedStyle(() => {
@@ -51,4 +53,7 @@ export const options: NativeStackNavigationOptions = {
     
 };
 
-export default Splash;
+export default {
+    name: pageName,
+    component: Splash,
+} as PageIndex<typeof pageName>;

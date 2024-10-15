@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import colorChoice from '../colors';
 
 export const typography = StyleSheet.create({
     container: {
@@ -64,7 +63,19 @@ export const typography = StyleSheet.create({
     },
     roundedCircle: {
         borderRadius: 9999,
-    }
+    },
+    overflowHidden: {
+        overflow: 'hidden',
+    },
+    overflowVisible: {
+        overflow: 'visible',
+    },
+    overflowScroll: {
+        overflow: "scroll",
+    },
+    containerFill: {
+        flex: 1,
+    },
 });
 
 export default typography;

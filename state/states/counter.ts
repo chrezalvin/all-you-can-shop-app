@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 /**
  * Interface for the counter state
  */
-interface CounterState {
+export interface CounterState {
     /**
      * The count of the counter, the count cannot be negative
      */

@@ -5,19 +5,26 @@ import { Home } from "./Home";
 import { Notification } from "./Notification";
 import { Payment } from "./Payment";
 import { Profile } from "./Profile";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RouteStackParamList } from "@shared";
-import { View } from "react-native";
+import { NativeStackNavigationOptions, NativeStackScreenProps } from "@react-navigation/native-stack";
+import { routeList, RouteStackParamList } from "@shared";
 import { Icon, Text } from "react-native-paper";
+import AppIcon from "@assets/favicon.svg";
+import { PageIndex } from "@libs";
+import styles from "@styles";
+import { View } from "react-native";
 
 const Tab = createBottomTabNavigator();
-type NavProps = NativeStackScreenProps<RouteStackParamList, "home">;
+const pageName = routeList.navs;
+type NavProps = NativeStackScreenProps<RouteStackParamList, typeof pageName>;
 
 export function Navs(props: NavProps){
     return (
-        <Tab.Navigator screenOptions={{
-            headerShown: false
-        }}>
+        <Tab.Navigator 
+            sceneContainerStyle={[styles.p2]} 
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
             <Tab.Screen 
                 name="home" 
                 component={Home} 
@@ -57,4 +64,22 @@ export function Navs(props: NavProps){
     );
 }
 
-export default Navs;
+export const navScreenOptions: NativeStackNavigationOptions = {
+    headerLeft: (props) => (
+        <View style={[
+            styles.py1,
+            styles.px2,
+        ]}>
+            <AppIcon width={30} height={30} />
+        </View>
+    ),
+    title: "All You Can Shop",
+};
+
+const pageAttr: PageIndex<typeof pageName> = {
+    name: pageName,
+    component: Navs,
+    headerOptions: navScreenOptions,
+}
+
+export default pageAttr;

@@ -5,8 +5,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { useMemo } from 'react';
 import Screens from 'Screens';
-import { getItem } from '@libs';
-import { setDark, store, useAppDispatch, useAppSelector } from '@redux';
+import { getItem, populateAsyncStorage } from '@libs';
+import { setDark, setMoney, setTransaction, store, useAppDispatch, useAppSelector } from '@redux';
 import { CombinedDarkTheme, CombinedDefaultTheme } from 'themeConfig';
 
 export function AppProvider(){
@@ -19,12 +19,22 @@ export function AppProvider(){
   useMemo(() => {
     async function loadStorage(){
       const isDark = await getItem("isDark");
+      const balance = await getItem("money");
+      const history = await getItem("transaction");
 
       if(isDark !== null)
         dispatch(setDark(isDark))
+
+      if(balance !== null)
+        dispatch(setMoney(balance));
+
+      if(history !== null)
+        dispatch(setTransaction(history));
     }
 
-    loadStorage();
+    populateAsyncStorage().then(() => {
+      loadStorage();
+    });
   }, [])
 
   return (

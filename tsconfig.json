@@ -10,6 +10,7 @@
       "@components": ["components"],
       "@shared": ["shared"],
       "@redux": ["state"],
+      "@api": ["api"],
     }
   }
 }

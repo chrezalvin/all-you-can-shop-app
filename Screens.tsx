@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Home, Navs, Splash } from "pages";
+import pagesList from "pages";
 import { Platform, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { routeList, RouteStackParamList } from "@shared";
@@ -19,9 +19,16 @@ export function Screens(){
         },
       ]}>
         <Stack.Navigator initialRouteName={Platform.OS === "web" ? routeList.splash : routeList.navs}>
-          <Stack.Screen name={routeList.splash} component={Splash} options={{headerShown: false}} />
-          <Stack.Screen name={routeList.home} component={Home} options={{headerShown: false}} />
-          <Stack.Screen name={routeList.navs} component={Navs} options={{headerShown: false}} />
+          {
+            pagesList.map((page) => 
+              <Stack.Screen 
+                key={page.name} 
+                name={page.name} 
+                component={page.component}
+                options={page.headerOptions ?? {headerShown: false}} 
+              />
+            )
+          }
         </Stack.Navigator>
       </View>
     );

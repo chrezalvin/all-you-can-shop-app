@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Appearance, Platform } from "react-native";
 import { setItem } from "../../libs/AsyncStorage";
 
-interface IsDarkState {
+export interface IsDarkState {
     /**
      * is dark mode enabled, default to true
      */
