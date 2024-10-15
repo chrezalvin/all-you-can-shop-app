@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { RouteStackParamList, routeList } from "@shared";
+import { PageIndex } from "@libs";
 
 type ConfirmProps = NativeStackScreenProps<RouteStackParamList, typeof routeList.confirm>;
 
@@ -14,4 +15,7 @@ export function Confirm(props: ConfirmProps){
     );
 }
 
-export default Confirm;
+export default {
+    name: routeList.confirm,
+    component: Confirm,
+} as PageIndex<typeof routeList.confirm>;

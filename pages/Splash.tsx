@@ -20,7 +20,7 @@ export function Splash(props: SplashNavProps){
 
         // go to home in 3 seconds
         setTimeout(() => {
-            props.navigation.replace("navs");
+            props.navigation.replace("navs", {screen: "home"});
         }, 0);
     }, [])
 

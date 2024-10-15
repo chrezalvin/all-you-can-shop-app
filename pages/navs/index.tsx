@@ -6,14 +6,14 @@ import { Notification } from "./Notification";
 import { Payment } from "./Payment";
 import { Profile } from "./Profile";
 import { NativeStackNavigationOptions, NativeStackScreenProps } from "@react-navigation/native-stack";
-import { routeList, RouteStackParamList } from "@shared";
+import { routeList, RouteNavParamList, RouteStackParamList } from "@shared";
 import { Icon, Text } from "react-native-paper";
 import AppIcon from "@assets/favicon.svg";
 import { PageIndex } from "@libs";
 import styles from "@styles";
 import { View } from "react-native";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RouteNavParamList>();
 const pageName = routeList.navs;
 type NavProps = NativeStackScreenProps<RouteStackParamList, typeof pageName>;
 

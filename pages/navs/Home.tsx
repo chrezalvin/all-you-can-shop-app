@@ -4,9 +4,20 @@ import AppIcon from "@assets/favicon.svg";
 import styles from "@styles";
 import { IconButton, SquareButton } from "@components";
 import { useAppSelector } from "@redux";
-import { useNavigation } from "@react-navigation/native";
+import { CompositeScreenProps, useNavigation } from "@react-navigation/native";
+import { RouteNavParamList } from "../../shared/navRoutes";
+import { RouteStackParamList  } from "../../shared/routes";
+import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@react-navigation/stack";
 
-export function Home(){
+type HomeProps = CompositeScreenProps<
+    BottomTabScreenProps<RouteNavParamList, "home">,
+    NativeStackScreenProps<RouteStackParamList>
+>;
+
+export function Home(props: HomeProps){
     const theme = useTheme();
     const balance = useAppSelector((state) => state.money.amount);
 
@@ -60,7 +71,10 @@ export function Home(){
                 styles.py5,
                 styles.gap3,
             ]}>
-                <IconButton label="Pulsa/Data">
+                <IconButton 
+                    label="Pulsa/Data"
+                    onPress={() => {props.navigation.navigate("confirm", {intent: ""})}}
+                >
                     <Icon source="cellphone" size={48} color={theme.colors.secondary} />
                 </IconButton>
 
