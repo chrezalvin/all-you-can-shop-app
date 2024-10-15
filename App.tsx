@@ -1,36 +1,52 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import {styles as styles2} from "@styles";
 import { NavigationContainer } from '@react-navigation/native';
+
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
+import { useMemo } from 'react';
+import Screens from 'Screens';
+import { getItem } from '@libs';
+import { setDark, store, useAppDispatch, useAppSelector } from '@redux';
+import { CombinedDarkTheme, CombinedDefaultTheme } from 'themeConfig';
 
-export function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+export function AppProvider(){
+  const dispatch = useAppDispatch();
+  const isDarkTheme = useAppSelector(state => state.isDark.isDark);
 
-export default function AppProvider(){
+  const theme = isDarkTheme ? CombinedDarkTheme : CombinedDefaultTheme;
+
+  // load storage before render
+  useMemo(() => {
+    async function loadStorage(){
+      const isDark = await getItem("isDark");
+
+      if(isDark !== null)
+        dispatch(setDark(isDark))
+    }
+
+    loadStorage();
+  }, [])
+
   return (
     <SafeAreaProvider>
-      <PaperProvider>
-        <NavigationContainer>
-          <App />
+      <PaperProvider theme={theme}>
+        <NavigationContainer 
+          theme={theme} 
+          documentTitle={{
+            formatter: () => "All You Can Shop",
+          }}
+        >
+          <Screens />
         </NavigationContainer>
       </PaperProvider>
     </SafeAreaProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function ReduxWrapper(){
+  return (
+    <Provider store={store}>
+      <AppProvider />
+    </Provider>
+  );
+}

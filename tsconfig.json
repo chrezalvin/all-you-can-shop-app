@@ -6,6 +6,10 @@
     "paths": {
       "@assets/*": ["assets/*"],
       "@styles": ["styles"],
+      "@libs": ["libs"],
+      "@components": ["components"],
+      "@shared": ["shared"],
+      "@redux": ["state"],
     }
   }
 }
