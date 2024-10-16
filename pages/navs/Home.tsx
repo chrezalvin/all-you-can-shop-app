@@ -6,7 +6,7 @@ import { IconButton, SquareButton } from "@components";
 import { useAppSelector } from "@redux";
 import { CompositeScreenProps, useNavigation } from "@react-navigation/native";
 import { RouteNavParamList } from "../../shared/navRoutes";
-import { RouteStackParamList  } from "../../shared/routes";
+import { routeList, RouteStackParamList  } from "../../shared/routes";
 import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -73,12 +73,15 @@ export function Home(props: HomeProps){
             ]}>
                 <IconButton 
                     label="Pulsa/Data"
-                    onPress={() => {props.navigation.navigate("confirm", {intent: ""})}}
+                    onPress={() => {props.navigation.navigate(routeList.phoneBuy)}}
                 >
                     <Icon source="cellphone" size={48} color={theme.colors.secondary} />
                 </IconButton>
 
-                <IconButton label="Listrik">
+                <IconButton 
+                    label="Listrik"
+                    onPress={() => {props.navigation.navigate(routeList.electricityBuy)}}
+                >
                     <Icon source="lightning-bolt" size={48} color={theme.colors.secondary} />
                 </IconButton>
                 

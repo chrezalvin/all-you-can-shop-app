@@ -7,3 +7,7 @@ export {
 export {
     PageIndex,
 } from "./types";
+
+export {
+    isPhoneValid,
+} from "./utilityFunctions";

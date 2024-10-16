@@ -17,7 +17,8 @@ export type RouteStackParamList = {
     [routeList.splash]: undefined;
     [routeList.navs]: NavigatorScreenParams<RouteNavParamList>;
     [routeList.confirm]: {
-        intent: string;
+        intent: "pulsa" | "data" | "electricity";
+        id: string;
     };
     [routeList.phoneBuy]: undefined;
     [routeList.electricityBuy]: undefined;
