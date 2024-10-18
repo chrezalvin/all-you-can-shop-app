@@ -11,3 +11,15 @@ export async function getElectricityList(): Promise<ElectricityItem[]>{
 
     return Electricity;
 }
+
+export async function getElectricity(id: string): Promise<ElectricityItem>{
+    // wait for 1 second
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const electricity = Electricity.find(electricity => electricity.id === parseInt(id));
+
+    if(electricity === undefined)
+        throw new Error("Electricity not found");
+
+    return electricity;
+}

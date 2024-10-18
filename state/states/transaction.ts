@@ -1,23 +1,16 @@
+import { Transaction } from "@models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface TransactionState {
-    id: string;
-    date: string;
-    amount: number;
-    finished: boolean;
-    info: string;
-}
-
-const initialState: TransactionState[] = [];
+const initialState: Transaction[] = [];
 
 export const transactionSlice = createSlice({
     name: "transaction",
     initialState,
     reducers: {
-        setNewTransaction: (state, action: PayloadAction<TransactionState>) => {
+        setNewTransaction: (state, action: PayloadAction<Transaction>) => {
             state.push(action.payload);
         },
-        setTransaction: (state, action: PayloadAction<TransactionState[]>) => {
+        setTransaction: (state, action: PayloadAction<Transaction[]>) => {
             return action.payload;
         },
     },
@@ -25,6 +18,6 @@ export const transactionSlice = createSlice({
 
 export const { setNewTransaction, setTransaction } = transactionSlice.actions;
 
-export const selectTransaction = (state: {transaction: TransactionState[]}) => state.transaction;
+export const selectTransaction = (state: {transaction: Transaction[]}) => state.transaction;
 
 export default transactionSlice.reducer;

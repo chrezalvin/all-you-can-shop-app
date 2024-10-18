@@ -2,6 +2,7 @@ import counterConnector from "./counter";
 import isDarkConnector from "./isDark";
 import transactionConnector from "./transaction";
 import moneyConnector from "./money";
+import attemptConnector from "./attempt";
 
 export {
     add,
@@ -23,11 +24,17 @@ export {
     setTransaction,
 } from "./transaction";
 
+export {
+    addAttempt,
+    resetAttempt,
+} from "./attempt";
+
 export const reducer = {
     isDark: isDarkConnector,
     counter: counterConnector,
     transaction: transactionConnector,
     money: moneyConnector,
+    attempt: attemptConnector,
 }
 
 export default reducer;

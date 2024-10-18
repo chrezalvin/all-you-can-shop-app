@@ -1,11 +1,12 @@
+import { Transaction } from "@models";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TransactionState } from "state/states/transaction";
 
 interface AsyncStorageItem {
     isDark: boolean;
     count: number;
     money: number;
-    transaction: TransactionState[];
+    transaction: Transaction[];
+    attempt: number;
 }
 
 const initialAsyncStorageItem: AsyncStorageItem = {
@@ -13,6 +14,7 @@ const initialAsyncStorageItem: AsyncStorageItem = {
     count: 0,
     money: 557000,
     transaction: [],
+    attempt: 0,
 }
 
 export async function populateAsyncStorage(): Promise<void> {

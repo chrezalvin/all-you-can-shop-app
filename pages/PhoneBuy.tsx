@@ -1,11 +1,12 @@
-import { DataPackageItem, getDataPackageList, getPulsaList, PulsaItem } from "@api";
-import { isPhoneValid, PageIndex } from "@libs";
+import { getDataPackageList, getPulsaList } from "@api";
+import { CustomInput, PriceCard } from "@components";
+import { decideProvider, isPhoneValid, PageIndex } from "@libs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { routeList, RouteStackParamList } from "@shared";
 import styles from "@styles";
 import { useEffect, useState } from "react";
-import { View, ScrollView, Pressable } from "react-native";
-import { ActivityIndicator, Card, Icon, Text, TextInput, useTheme } from "react-native-paper";
+import { View, ScrollView, Pressable, Image } from "react-native";
+import { ActivityIndicator, Text, TextInput, useTheme } from "react-native-paper";
 
 const pageName = routeList.phoneBuy;
 type PhoneBuyProps = NativeStackScreenProps<RouteStackParamList, typeof pageName>;
@@ -13,6 +14,7 @@ type PhoneBuyProps = NativeStackScreenProps<RouteStackParamList, typeof pageName
 interface CardItem{
     title: string;
     subtitle?: string;
+    amount: number;
     onPress: () => void;
 }
 
@@ -62,12 +64,12 @@ function PhoneBuyBody(phoneNo: string, isLoading: boolean, cardItems: CardItem[]
         >
             {
                 cardItems?.map((val) => (
-                    <Card onPress={val.onPress}>
-                        <Card.Title 
-                            title={val.title} 
-                            subtitle={val.subtitle} 
-                        />
-                    </Card>
+                    <PriceCard 
+                        amount={val.amount}
+                        onPress={val.onPress}
+                        subtitle={val.subtitle}
+                        title={val.title}
+                    />
                 ))
             }
         </ScrollView>
@@ -82,55 +84,59 @@ export function PhoneBuy(props: PhoneBuyProps){
     const [isData, setIsData] = useState(false);
     const [pulsaDataList, setPulsaDataList] = useState<CardItem[] | null>(null);
 
+    async function getData(){
+        setIsLoading(true);
+
+        try{
+            if(isData){
+                const listres = await getDataPackageList();
+                setPulsaDataList(listres.map(val => {
+                        return {
+                            title: val.name,
+                            subtitle: val.info,
+                            amount: val.amount,
+                            onPress: () => {props.navigation.navigate("confirm", {intent: "data", id: val.id.toString(), targId: phoneNo})},
+                        }
+                    }));
+            }
+            else{
+                const listres = await getPulsaList();
+                setPulsaDataList(
+                    listres.map(val => {
+                        return {
+                            title: `Rp. ${val.amount.toLocaleString()}`,
+                            amount: val.amount,
+                            onPress: () => {props.navigation.navigate("confirm", {intent: "pulsa", id: val.id.toString(), targId: phoneNo})},
+                        }
+                    })
+                );
+            }
+        }
+        catch(e){
+            console.error(e);
+        }
+        finally{
+            setIsLoading(false);
+        }
+    }
+
     // basic debouncing for 1 second
     useEffect(() => {
         setIsLoading(true);
 
-        const timer = setTimeout(async () => {
-            setIsLoading(false);
+        const timer = setTimeout(() => {
+            getData();
         }, 1000);
 
         return () => clearTimeout(timer);
     }, [phoneNo]);
 
+    // fetch data whenever the switch change
     useEffect(() => {
-        const reload = async () => {
-            setIsLoading(true);
-
-            try{
-                if(isData){
-                    const listres = await getDataPackageList();
-                    setPulsaDataList(listres.map(val => {
-                            return {
-                                title: val.name,
-                                subtitle: val.info,
-                                onPress: () => {props.navigation.navigate("confirm", {intent: "pulsa", id: val.id.toString()})},
-                            }
-                        }));
-                }
-                else{
-                    const listres = await getPulsaList();
-                    setPulsaDataList(
-                        listres.map(val => {
-                            return {
-                                title: `Rp. ${val.amount.toLocaleString()}`,
-                                onPress: () => {props.navigation.navigate("confirm", {intent: "data", id: val.id.toString()})},
-                            }
-                        })
-                    );
-                }
-            }
-            catch(e){
-                console.error(e);
-            }
-            finally{
-                setIsLoading(false);
-            }
-        }
-
-        reload();
+        getData();
     }, [isData]);
 
+    const provider = decideProvider(phoneNo);
     return (
         <View style={[
             styles.containerFill,
@@ -149,30 +155,13 @@ export function PhoneBuy(props: PhoneBuyProps){
                         maxWidth: "90%",
                     },
                 ]}>
-                    <View style={[
-                        styles.flexVertical,
-                        styles.gap1,
-                    ]}>
-                        <Text>Nomor Ponsel</Text>
-                        <TextInput
-                            onChangeText={(val) => {setPhoneNo(val)}}
-                            keyboardType="number-pad"
-                            placeholder="No. Hp"
-                            activeUnderlineColor="transparent"
-                            underlineColor="transparent"
-                            right={<TextInput.Icon icon="contacts"/>}
-                            theme={{
-                                roundness: styles.rounded2.borderRadius,
-                            }}
-                            style={[
-                                {
-                                    height: 50,
-                                },
-                                styles.overflowHidden,
-                                styles.rounded2,
-                            ]}
-                        />
-                    </View>
+                    <CustomInput 
+                        label="Nomor Ponsel"
+                        placeholder="No. Hp"
+                        onChangeText={(val) => {setPhoneNo(val)}}
+                        inputMode="numeric"
+                        rightIcon={typeof provider === "string" ? provider : <TextInput.Icon rippleColor="transparent" icon={(props) => <Image source={provider?.img ?? "cellphone"} style={{height: props.size, width: props.size, objectFit: "contain"}} />} />}
+                    />
 
                     <View style={[
                         {

@@ -10,4 +10,7 @@ export {
 
 export {
     isPhoneValid,
+    isElectricityIdValid,
+    decideProvider,
+    convertDateToString,
 } from "./utilityFunctions";

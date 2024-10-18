@@ -7,3 +7,7 @@ export {
     RouteNavParamList,
     navRouteList,
 } from "./navRoutes";
+
+export {
+    phoneProviderLookup
+} from "./phoneProviderLookup";

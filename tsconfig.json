@@ -11,6 +11,7 @@
       "@shared": ["shared"],
       "@redux": ["state"],
       "@api": ["api"],
+      "@models": ["api/models"],
     }
   }
 }

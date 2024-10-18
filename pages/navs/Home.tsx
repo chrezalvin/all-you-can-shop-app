@@ -11,6 +11,8 @@ import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/n
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackScreenProps } from "@react-navigation/stack";
+import { useEffect, useState } from "react";
+import { getMoney } from "@api";
 
 type HomeProps = CompositeScreenProps<
     BottomTabScreenProps<RouteNavParamList, "home">,
@@ -19,7 +21,18 @@ type HomeProps = CompositeScreenProps<
 
 export function Home(props: HomeProps){
     const theme = useTheme();
-    const balance = useAppSelector((state) => state.money.amount);
+    const [balance, setBalance] = useState<number | null>(null);
+    
+    useEffect(() => {
+        async function fetchMoney(){
+            const balance = await getMoney();
+
+            setBalance(balance);
+        }
+
+        fetchMoney();
+    });
+
 
     return (
         <View>
