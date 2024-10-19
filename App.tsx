@@ -1,20 +1,62 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 
-export default function App() {
+import { PaperProvider } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
+import { useMemo } from 'react';
+import Screens from 'Screens';
+import { getItem, populateAsyncStorage } from '@libs';
+import { setDark, setMoney, setTransaction, store, useAppDispatch, useAppSelector } from '@redux';
+import { CombinedDarkTheme, CombinedDefaultTheme } from 'themeConfig';
+
+export function AppProvider(){
+  const dispatch = useAppDispatch();
+  const isDarkTheme = useAppSelector(state => state.isDark.isDark);
+
+  const theme = isDarkTheme ? CombinedDarkTheme : CombinedDefaultTheme;
+
+  // load storage before render
+  useMemo(() => {
+    async function loadStorage(){
+      const isDark = await getItem("isDark");
+      const balance = await getItem("money");
+      const history = await getItem("transaction");
+
+      if(isDark !== null)
+        dispatch(setDark(isDark))
+
+      if(balance !== null)
+        dispatch(setMoney(balance));
+
+      if(history !== null)
+        dispatch(setTransaction(history));
+    }
+
+    populateAsyncStorage().then(() => {
+      loadStorage();
+    });
+  }, [])
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <PaperProvider theme={theme}>
+        <NavigationContainer 
+          theme={theme} 
+          documentTitle={{
+            formatter: () => "All You Can Shop",
+          }}
+        >
+          <Screens />
+        </NavigationContainer>
+      </PaperProvider>
+    </SafeAreaProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function ReduxWrapper(){
+  return (
+    <Provider store={store}>
+      <AppProvider />
+    </Provider>
+  );
+}

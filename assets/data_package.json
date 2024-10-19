@@ -1,0 +1,71 @@
+[
+    {
+        "id": 1,
+        "name": "Super Seru Kuota Hingga 80GB",
+        "info": "Data up to 80GB, 28 Days",
+        "days": 28,
+        "amount": 100000
+    },
+    {
+        "id": 2,
+        "name": "Internet Sakti 5GB/7hr",
+        "days": 7,
+        "amount": 17500
+    },
+    {
+        "id": 3,
+        "name": "Super Seru Kuota Hingga 125GB",
+        "info": "Data up to 125GB, 28 Days",
+        "days": 28,
+        "amount": 150000
+    },
+    {
+        "id": 4,
+        "name": "Super Seru Kuota Hingga 170GB",
+        "info": "Data up to 170GB, 28 Days",
+        "days": 28,
+        "amount": 200000
+    },
+    {
+        "id": 5,
+        "name": "Internet Sakti 3GB/7hr",
+        "info": "Total Quota 3GB, 2GB All Net + 1GB Apps Quota",
+        "days": 7,
+        "amount": 11000
+    },
+    {
+        "id": 6,
+        "name": "Internet Sakti 12GB/30hr",
+        "info": "Total Quota 12GB, 7GB All Net + 5GB Apps Quota",
+        "days": 30,
+        "amount": 33000
+    },
+    {
+        "id": 7,
+        "name": "Internet Sakti 20GB/30hr",
+        "info": "Total Quota 20GB, 12GB All Net + 8GB Apps Quota",
+        "days": 30,
+        "amount": 50000
+    },
+    {
+        "id": 8,
+        "name": "Internet Sakti 24GB",
+        "info": "Total Quota 24GB, 15GB All Net + 9GB Apps Quota",
+        "days": 30,
+        "amount": 61000
+    },
+    {
+        "id": 9,
+        "name": "Combo HVC MAX Zn2 7GB 60 Min Onnet",
+        "info": "Total Quota 7GB | 60 Mins Voice | 200 SMS",
+        "days": 30,
+        "amount": 32500
+    },
+    {
+        "id": 10,
+        "name": "Combo HVC Unlimited 35GB 150 Min Onnet 90K Masa Aktif 30hari",
+        "info": "Total Quota 35GB. All net 20GB + FUP 15GB | Voice 150 Mins | 400 SMS",
+        "days":30,
+        "amount": 90000
+    }
+]
