@@ -1,7 +1,6 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { RouteNavParamList } from "./navRoutes";
-import { transaction } from "@api";
-import { Transaction } from "@models";
+import { Transaction, TransactionType } from "@models";
 
 export const routeList = {
     home: "home",
@@ -13,6 +12,9 @@ export const routeList = {
     electricityBuy: "electricityBuy",
     pin: "pin",
     transactionFeedback: "TransactionFeedback",
+    topup: "topup",
+    transactionDetail: "transactionDetail",
+    bpjs: "bpjs",
 } as const;
 
 export type RouteStackParamList = {
@@ -22,13 +24,18 @@ export type RouteStackParamList = {
     [routeList.navs]: NavigatorScreenParams<RouteNavParamList>;
     [routeList.phoneBuy]: undefined;
     [routeList.electricityBuy]: undefined;
+    [routeList.topup]: undefined;
+    [routeList.bpjs]: undefined;
+    [routeList.transactionDetail]: {
+        transaction: Transaction;
+    };
     [routeList.confirm]: {
-        intent: "pulsa" | "data" | "electricity";
+        intent: TransactionType;
         id: string;
         targId: string;
     };
     [routeList.pin]: {
-        intent: "pulsa" | "data" | "electricity";
+        intent: TransactionType;
         id: string;
         targId: string;
     };

@@ -2,12 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { History } from "./History";
 import { Home } from "./Home";
-import { Notification } from "./Notification";
-import { Payment } from "./Payment";
 import { Profile } from "./Profile";
 import { NativeStackNavigationOptions, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { routeList, RouteNavParamList, RouteStackParamList } from "@shared";
-import { Icon, Text } from "react-native-paper";
+import { Icon } from "react-native-paper";
 import AppIcon from "@assets/favicon.svg";
 import { PageIndex } from "@libs";
 import styles from "@styles";
@@ -37,20 +35,6 @@ export function Navs(props: NavProps){
                 component={History} 
                 options={{
                     tabBarIcon: (props) => <Icon source="history" size={props.size} color={props.color} />,
-                }}
-            />
-            <Tab.Screen 
-                name="notification" 
-                component={Notification} 
-                options={{
-                    tabBarIcon: (props) => <Icon source="email" size={props.size} color={props.color} />,
-                }}
-            />
-            <Tab.Screen 
-                name="payment" 
-                component={Payment} 
-                options={{
-                    tabBarIcon: (props) => <Icon source="home" size={props.size} color={props.color} />,
                 }}
             />
             <Tab.Screen 

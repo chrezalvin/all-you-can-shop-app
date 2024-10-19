@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "name": "1 Bulan",
+        "amount": 13500
+    },
+    {
+        "id": 2,
+        "name": "2 Bulan",
+        "amount": 27000
+    },
+    {
+        "id": 3,
+        "name": "3 Bulan",
+        "amount": 40500
+    },
+    {
+        "id": 4,
+        "name": "4 Bulan",
+        "amount": 54000
+    },
+    {
+        "id": 5,
+        "name": "5 Bulan",
+        "amount": 67500
+    },
+    {
+        "id": 6,
+        "name": "6 Bulan",
+        "amount": 81000
+    },
+    {
+        "id": 7,
+        "name": "7 Bulan",
+        "amount": 94500
+    },
+    {
+        "id": 8,
+        "name": "8 Bulan",
+        "amount": 108000
+    },
+    {
+        "id": 9,
+        "name": "9 Bulan",
+        "amount": 121500
+    },
+    {
+        "id": 10,
+        "name": "10 Bulan",
+        "amount": 135000
+    },
+    {
+        "id": 11,
+        "name": "11 Bulan",
+        "amount": 148500
+    },
+    {
+        "id": 12,
+        "name": "12 Bulan",
+        "amount": 162000
+    }
+]

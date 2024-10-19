@@ -10,6 +10,11 @@ export function isElectricityIdValid(id: string): boolean{
     return id.match(/^[1-9][0-9]{9,11}$/) !== null;
 }
 
+export function isBpjsIdValid(id: string): boolean{
+    // 13 digits 0 at the start
+    return id.match(/^0[0-9]{12}$/) !== null;
+}
+
 export function decideProvider(phoneNo: string){
     const provider = phoneProviderLookup.find(val => val.startNo.some(start => phoneNo.startsWith(start)));
     return provider;

@@ -3,10 +3,9 @@ import { PageIndex } from "@libs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { routeList, RouteStackParamList } from "@shared";
 import styles from "@styles";
-import { cancelTransaction } from "@api";
 import { useEffect, useRef, useState } from "react";
-import { BackHandler, ColorValue, Pressable, TextInput, View } from "react-native";
-import { ActivityIndicator, Button, Text } from "react-native-paper";
+import { ColorValue, Pressable, TextInput, View } from "react-native";
+import { ActivityIndicator, Text } from "react-native-paper";
 
 const pageName = routeList.pin;
 type PinProps = NativeStackScreenProps<RouteStackParamList, typeof pageName>;
@@ -34,7 +33,7 @@ export function Pin(props: PinProps){
                 setIsLoading(true);
     
                 try{
-                    const res = await transaction(props.route.params.id, props.route.params.targId, props.route.params.intent, pin);
+                    const res = await transaction(props.route.params.id, props.route.params.intent, pin, props.route.params.targId);
 
                     props.navigation.replace("TransactionFeedback", {transaction: res});
                 }

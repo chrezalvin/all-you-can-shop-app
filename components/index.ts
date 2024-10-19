@@ -24,3 +24,8 @@ export {
     CustomInput,
     CustomInputProps,
 } from "./CustomInput";
+
+export {
+    TransactionIcon,
+    TransactionIconProps,
+} from "./TransactionIcon";

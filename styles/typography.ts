@@ -76,6 +76,27 @@ export const typography = StyleSheet.create({
     containerFill: {
         flex: 1,
     },
+    absolute: {
+        position: 'absolute',
+    },
+    relative: {
+        position: 'relative',
+    },
+    static: {
+        position: "static"
+    },
+    bottom0: {
+        bottom: 0,
+    },
+    top0: {
+        top: 0,
+    },
+    left0: {
+        left: 0,
+    },
+    right0: {
+        right: 0,
+    },
 });
 
 export default typography;

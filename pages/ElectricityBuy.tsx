@@ -1,6 +1,6 @@
 import { getElectricityList } from "@api";
 import { CustomInput, PriceCard } from "@components";
-import { isElectricityIdValid, isPhoneValid, PageIndex } from "@libs";
+import { isElectricityIdValid, PageIndex } from "@libs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { routeList, RouteStackParamList } from "@shared";
 import styles from "@styles";

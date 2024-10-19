@@ -1,30 +1,42 @@
-import { getTransactionHistory } from "@api";
+import { findTransactions, getTransactionHistory } from "@api";
 import { CustomInput } from "@components";
 import { convertDateToString } from "@libs";
 import { Transaction } from "@models";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RouteNavParamList, RouteStackParamList } from "@shared";
 import styles from "@styles";
 import { useEffect, useState } from "react";
-import { View, Image, ScrollView } from "react-native";
-import { ActivityIndicator, Text, TextInput, useTheme } from "react-native-paper";
+import { View, Image, ScrollView, Pressable } from "react-native";
+import { ActivityIndicator, Text, useTheme } from "react-native-paper";
 
 const noHistory = require("@assets/no_history_grayscaled.png");
 
-export function HistoryItemCard(transaction: Transaction){
+interface HistoryItemCardProps{
+    transaction: Transaction;
+    onPress: () => void;
+}
+
+export function HistoryItemCard({transaction, onPress}: HistoryItemCardProps){
     return (
-        <View style={[
-            {
-                borderBottomWidth: 1,
-            },
-            styles.pb2,
-            styles.containerFill,
-            styles.flexVertical,
-            styles.gap1,
-        ]}>
+        <Pressable 
+            onPress={onPress}
+            style={[
+                {
+                    borderBottomWidth: 1,
+                },
+                styles.pb2,
+                styles.containerFill,
+                styles.flexVertical,
+                styles.gap1,
+            ]}
+        >
             <View style={[
                 styles.flexHorizontal,
                 styles.justifyBetween,
             ]}>
-                <Text>{transaction.id}</Text>
+                <Text>[{transaction.type.toUpperCase()}] {transaction.info}</Text>
                 <Text>{convertDateToString(new Date(transaction.date))}</Text>                
             </View>
             <View style={[
@@ -32,19 +44,30 @@ export function HistoryItemCard(transaction: Transaction){
                 styles.justifyBetween,
             ]}>
                 <Text>Saldo</Text>
-                <Text style={[styles.fwBold]}>Rp. {transaction.amount.toLocaleString()}</Text>
+                <Text style={[
+                    {
+                        color: transaction.type === "topup" ? "green" : "red",
+                    },
+                    styles.fwBold
+                ]}>{transaction.type === "topup" ? "+" : "-"} Rp. {transaction.amount.toLocaleString()}</Text>
             </View>
             <Text style={{
                 color: transaction.finished ? "green" : "red",
             }}>
                 {transaction.finished ? "Berhasil" : "Gagal"}
             </Text>
-        </View>
+        </Pressable>
     );
 }
 
-export function History(){
+
+type HistoryProps = CompositeScreenProps<
+    BottomTabScreenProps<RouteNavParamList, "history">,
+    NativeStackScreenProps<RouteStackParamList>
+>;
+export function History(props: HistoryProps){
     const [history, setHistory] = useState<Transaction[] | null>();
+    const [search, setSearch] = useState<string | null>();
     const theme = useTheme();
 
     useEffect(() => {
@@ -56,6 +79,20 @@ export function History(){
 
         fetchHistory();
     }, []);
+
+    // basic debouncing for 1 second
+    useEffect(() => {
+        const timeout = setTimeout(async () => {
+            if(search !== "" || search !== null)
+                return;
+
+            const newHistory = await findTransactions(search);
+
+            setHistory(newHistory);
+        }, 1000);
+
+        return () => clearTimeout(timeout);
+    }, [search]);
 
     function DisplayTransactionHistory({history, isLoading}: {history: Transaction[], isLoading?: boolean}){
         if(isLoading){
@@ -118,7 +155,10 @@ export function History(){
                     ]}
                 >
                     {history.map((transaction) => (
-                        <HistoryItemCard {...transaction} />
+                        <HistoryItemCard 
+                            transaction={transaction} 
+                            onPress={() => {props.navigation.navigate("transactionDetail", {transaction})}} 
+                        />
                     ))}
                 </ScrollView>
             );
@@ -144,6 +184,7 @@ export function History(){
                 <CustomInput
                     leftIcon="magnify"
                     placeholder="Cari transaksi"
+                    onChangeText={setSearch}
                 />
                 <DisplayTransactionHistory
                     history={history ?? []}

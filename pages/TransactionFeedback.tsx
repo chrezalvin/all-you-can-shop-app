@@ -1,12 +1,15 @@
-import { PageIndex } from "@libs";
+import { convertDateToString, PageIndex } from "@libs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { routeList, RouteStackParamList } from "@shared";
 import styles from "@styles";
 import { BackHandler, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { getMoney } from "@api";
+
+import SuccessSvgFinished from "@assets/success_end.svg";
+import FailSvgFinished from "@assets/failed_end.svg";
 
 const successLottie = require("@assets/success_lottie.json");
 const failLottie = require("@assets/failed_lottie.json");
@@ -15,11 +18,24 @@ const pageName = routeList.transactionFeedback;
 type TransactionFeedbackProps = NativeStackScreenProps<RouteStackParamList, typeof pageName>;
 
 export function TransactionFeedback(props: TransactionFeedbackProps) {
-    const animation = useRef<LottieView>(null);
-    // const isSuccess = props.route.params.transaction.finished;
     const [animationFinished, setAnimationFinished] = useState<boolean>(false);
     const [balance, setBalance] = useState<number | null>(null);
     const transaction = props.route.params.transaction;
+
+    function getMessage(): string{
+        if(transaction.type === "topup"){
+            if(transaction.finished)
+                return `Saldo kamu sudah di tambah, saldo kamu sekarang Rp. ${balance?.toLocaleString() ?? "-"}`;
+            else
+                return "Saldo kamu tidak di tambah";
+        }
+        else{
+            if(transaction.finished)
+                return `Saldo kamu sudah di tarik, sisa saldo kamu sekarang Rp. ${balance?.toLocaleString() ?? "-"}`;
+            else
+                return "Saldo kamu tidak di tarik";
+        }
+    }
 
     useEffect(() => {
         async function fetchMoney(){
@@ -29,14 +45,7 @@ export function TransactionFeedback(props: TransactionFeedbackProps) {
         }
 
         fetchMoney();
-    });
-
-    useEffect(() => {
-        animation.current?.reset();
-        setTimeout(() => {
-            animation.current?.play();
-        }, 0)
-    }, [])
+    }, []);
 
     BackHandler.addEventListener("hardwareBackPress", () => {
         props.navigation.replace(routeList.navs, {screen: "home"});
@@ -63,19 +72,22 @@ export function TransactionFeedback(props: TransactionFeedbackProps) {
                     width: 150,
                     height: 150,
                 }}>
-                    <LottieView
-                        ref={animation}
-                        style={[
-                            styles.containerFill,
-                        ]}
-                        
-                        onAnimationFinish={animationFinished ? undefined : (isCanceled) => {
-                            console.log(isCanceled);
-                            animation.current?.pause();
-                            setAnimationFinished(true);
-                        }}
-                        source={transaction.finished ? successLottie : failLottie}
-                    />
+                    {
+                        animationFinished ? (
+                            transaction.finished ? <SuccessSvgFinished width={150} style={[styles.containerFill]} /> : <FailSvgFinished width={150} style={[styles.containerFill]} />
+                        ) : (
+                            <LottieView
+                                autoPlay
+                                style={[
+                                    styles.containerFill,
+                                ]}
+                                onAnimationFinish={() => {
+                                    setAnimationFinished(true);
+                                }}
+                                source={transaction.finished ? successLottie : failLottie}
+                            />
+                        )
+                    }
                 </View>
                 <View style={[
                     styles.gap2,
@@ -85,14 +97,9 @@ export function TransactionFeedback(props: TransactionFeedbackProps) {
                     <Text>Pembayaran sebesar</Text>
                     <Text variant="titleLarge" style={[styles.fwBold]}>{`Rp. ${transaction.amount.toLocaleString()}`}</Text>
                 </View>
-                <Text style={[styles.textCenter]}>{transaction.date.toString()}</Text>
-                {
-                    transaction.finished ? (
-                        <Text style={[styles.textCenter]}>Saldo kamu sudah di tarik, sisa saldo kamu sekarang Rp. {balance?.toLocaleString() ?? "-"}</Text>
-                    ) : (
-                        <Text style={[styles.textCenter]}>Saldo kamu tidak di tarik</Text>
-                    )
-                }
+                <Text style={[styles.textCenter]}>{convertDateToString(new Date(transaction.date))}</Text>
+                
+                <Text style={[styles.textCenter]}>{getMessage()}</Text>
             </View>
             <View style={[
                 styles.py2,
@@ -100,12 +107,13 @@ export function TransactionFeedback(props: TransactionFeedbackProps) {
             ]}>
                 <Button 
                     mode="contained" 
-                    // onPress={() => {animation.current?.play()}}
                     onPress={() => props.navigation.replace(routeList.navs, {screen: "home"})}
                 >
                     Kembali ke Beranda
                 </Button>
-                <Button>
+                <Button
+                    onPress={() => props.navigation.navigate("transactionDetail", {transaction})}
+                >
                     Lihat Detail
                 </Button>
             </View>

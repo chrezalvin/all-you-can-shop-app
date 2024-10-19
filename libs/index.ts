@@ -13,4 +13,5 @@ export {
     isElectricityIdValid,
     decideProvider,
     convertDateToString,
+    isBpjsIdValid,
 } from "./utilityFunctions";

@@ -1,12 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Image } from "react-native";
 import { ActivityIndicator, Button, Card, Icon, Text, useTheme } from "react-native-paper";
 import { RouteStackParamList, routeList } from "@shared";
 import { decideProvider, PageIndex } from "@libs";
 import styles from "@styles";
 import { TransactionType } from "@models";
 import { useEffect, useState } from "react";
-import { getDataPackage, getElectricity, getMoney, getPulsa } from "@api";
+import { getBpjs, getDataPackage, getElectricity, getMoney, getPulsa } from "@api";
+import { getTopUp } from "api/TopUp";
 
 type ConfirmProps = NativeStackScreenProps<RouteStackParamList, typeof routeList.confirm>;
 
@@ -18,18 +19,26 @@ interface CardConfirmProps{
 
 function CardConfirm({targId, type, amount}: CardConfirmProps){
     let typeName: string;
-    let icon: string;
+    let icon: string | Object;
 
     switch(type){
         case "pulsa":
         case "data":
             const provider = decideProvider(targId);
             typeName = provider?.providerName ?? "unknown";
-            icon = "cellphone";
+            icon = provider?.img ?? "cellphone";
             break;
         case "electricity":
             typeName = "Listrik";
             icon = "lightning-bolt";
+            break;
+        case "topup": 
+            typeName = "Top Up";
+            icon = "cash";
+            break;
+        case "bpjs":
+            typeName = "BPJS";
+            icon = "shield";
             break;
     }
 
@@ -42,7 +51,7 @@ function CardConfirm({targId, type, amount}: CardConfirmProps){
                 styles.gap3,
                 styles.alignItemsCenter,
             ]}>
-                <Icon source={"lightning-bolt"} size={36}/>
+                {typeof icon === "string" ? <Icon source={"lightning-bolt"} size={36}/> : <Image source={icon} style={{width: 36, height: 36, objectFit: "contain"}}/>}
                 <View style={[
                     styles.gap1,
                     styles.containerFill,
@@ -89,6 +98,18 @@ export function Confirm(props: ConfirmProps){
                     }
                     case "electricity":{
                         const res = await getElectricity(id);
+                        setPrice(res.amount);
+                        setProductName(`Rp. ${res.amount.toLocaleString()}`);
+                        break;
+                    }
+                    case "topup": {
+                        const res = await getTopUp(id);
+                        setPrice(res.amount);
+                        setProductName(`Rp. ${parseInt(id).toLocaleString()}`);
+                        break;
+                    }
+                    case "bpjs": {
+                        const res = await getBpjs(id);
                         setPrice(res.amount);
                         setProductName(`Rp. ${res.amount.toLocaleString()}`);
                         break;
@@ -143,7 +164,7 @@ export function Confirm(props: ConfirmProps){
                         styles.gap3,
                         styles.alignItemsCenter,
                     ]}>
-                        <Icon source="lightning-bolt" size={36}/>
+                        <Icon source="cash" size={36}/>
                         <View style={[
                             styles.gap1,
                             styles.containerFill,
@@ -205,12 +226,11 @@ export function Confirm(props: ConfirmProps){
                 </View>
             </ScrollView>
             <View style={[
-                {
-                    position: "absolute",
-                    bottom: 20,
-                    left: 0,
-                    right: 0,
-                },
+                styles.absolute,
+                styles.bottom0,
+                styles.left0,
+                styles.right0,
+                styles.mb3,
                 styles.px5,
             ]}>
                 <Button

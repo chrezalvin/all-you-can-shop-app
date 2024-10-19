@@ -1,16 +1,12 @@
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import { Card, Icon, Text, useTheme } from "react-native-paper";
-import AppIcon from "@assets/favicon.svg";
 import styles from "@styles";
-import { IconButton, SquareButton } from "@components";
-import { useAppSelector } from "@redux";
-import { CompositeScreenProps, useNavigation } from "@react-navigation/native";
+import { IconButton } from "@components";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { RouteNavParamList } from "../../shared/navRoutes";
 import { routeList, RouteStackParamList  } from "../../shared/routes";
-import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackScreenProps } from "@react-navigation/stack";
 import { useEffect, useState } from "react";
 import { getMoney } from "@api";
 
@@ -55,7 +51,7 @@ export function Home(props: HomeProps){
                         titleVariant="titleLarge"
                         subtitleVariant="titleMedium"
                     />
-                    <Card.Actions style={[styles.p0]}>
+                    <Card.Actions style={[styles.py2]}>
                         <View style={[
                             styles.containerFill,
                             styles.flexHorizontal,
@@ -63,13 +59,35 @@ export function Home(props: HomeProps){
                             styles.gap1,
                             styles.m0,
                         ]}>
-                            {
-                                [1, 2, 3].map((val) => (
-                                    <SquareButton>
-                                        <AppIcon width={50} height={50} />
-                                    </SquareButton>
-                                ))
-                            }
+                            <Pressable 
+                                onPress={() => {props.navigation.navigate(routeList.topup)}}
+                                style={[
+                                    styles.containerFill,
+                                    styles.alignItemsCenter,
+                                    styles.gap1,
+                                ]}
+                            >
+                                <Icon source="arrow-up-bold-circle-outline" size={24} />
+                                <Text>Top Up</Text>
+                            </Pressable>
+                            
+                            <Pressable style={[
+                                styles.containerFill,
+                                styles.alignItemsCenter,
+                                styles.gap1,
+                            ]}>
+                                <Icon source="arrow-down-bold-circle-outline" size={24} />
+                                <Text>Tarik Tunai</Text>
+                            </Pressable>
+
+                            <Pressable style={[
+                                styles.containerFill,
+                                styles.alignItemsCenter,
+                                styles.gap1,
+                            ]}>
+                                <Icon source="account-details-outline" size={24} />
+                                <Text>More</Text>
+                            </Pressable>
                         </View>
                     </Card.Actions>
                 </Card>
@@ -98,7 +116,10 @@ export function Home(props: HomeProps){
                     <Icon source="lightning-bolt" size={48} color={theme.colors.secondary} />
                 </IconButton>
                 
-                <IconButton label="BPJS">
+                <IconButton 
+                    label="BPJS"
+                    onPress={() => {props.navigation.navigate(routeList.bpjs)}}
+                >
                     <Icon source="card-account-details" size={48} color={theme.colors.secondary} />
                 </IconButton>
             </View>

@@ -26,9 +26,20 @@ export {
     purchasePulsa,
     transaction,
     cancelTransaction,
+    findTransactions,
 } from "./Transaction";
 
 export {
     getTransactionHistory,
     searchTransactionHistory,
 } from "./History";
+
+export {
+    getTopUpList,
+    getTopUp,
+} from "./TopUp";
+
+export {
+    getBpjs,
+    getBpjsList,
+} from "./bpjs";
