@@ -74,10 +74,11 @@ export function TransactionFeedback(props: TransactionFeedbackProps) {
                 }}>
                     {
                         animationFinished ? (
-                            transaction.finished ? <SuccessSvgFinished width={150} style={[styles.containerFill]} /> : <FailSvgFinished width={150} style={[styles.containerFill]} />
+                            transaction.finished ? <SuccessSvgFinished width={150} height={150} style={[styles.containerFill]} /> : <FailSvgFinished width={150} height={150} style={[styles.containerFill]} />
                         ) : (
                             <LottieView
-                                autoPlay
+                                autoPlay={true}
+                                loop={false}
                                 style={[
                                     styles.containerFill,
                                 ]}
