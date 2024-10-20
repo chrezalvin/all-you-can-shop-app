@@ -1,12 +1,15 @@
-import { toggle, useAppDispatch, useAppSelector } from "@redux";
+import { setLanguageById, toggle, useAppDispatch, useAppSelector } from "@redux";
 import styles from "@styles";
-import { View, Image } from "react-native";
-import { Switch, Text } from "react-native-paper";
+import { View, Image, Pressable } from "react-native";
+import { Icon, Switch, Text } from "react-native-paper";
+import { Dropdown } from "react-native-paper-dropdown";
+import languageList from "@assets/languages.json";
 
 const myPhoto = require("@assets/myPicture.png");
 
 export function Profile(){
     const isDark = useAppSelector((state) => state.isDark.isDark);
+    const language = useAppSelector((state) => state.language.language);
     const dispatch = useAppDispatch();
 
     return (
@@ -37,12 +40,70 @@ export function Profile(){
                     {
                         maxWidth: 300
                     },
-                    styles.flexHorizontal,
-                    styles.justifyBetween,
                     styles.containerFill,
                 ]}>
-                    <Text variant="labelMedium">Dark Mode</Text>
-                    <Switch value={isDark} onValueChange={() => {dispatch(toggle())}} />
+                    <View style={[
+                        styles.flexHorizontal,
+                        styles.justifyBetween,
+                        styles.containerFill,
+                        styles.py3,
+                    ]}>
+                        <Text variant="labelLarge">Dark Mode</Text>
+                        <Switch value={isDark} onValueChange={() => {dispatch(toggle())}} />
+                    </View>
+                    <View style={[
+                        styles.flexHorizontal,
+                        styles.justifyBetween,
+                        styles.containerFill,
+                        styles.py3,
+                    ]}>
+                        <Text variant="labelLarge">Language</Text>
+                        <View style={{
+                            width: 70,
+                        }}>
+                            <Dropdown
+                                mode="flat"
+                                statusBarHeight={50}
+                                maxMenuHeight={50}
+                                hideMenuHeader={true}
+                                CustomDropdownInput={(props) => (
+                                    <View style={[
+                                        styles.flexHorizontal,
+                                        styles.justifyBetween,
+                                    ]}>
+                                        <Text style={{
+                                            textAlignVertical: "center",
+                                            textAlign: "center",
+                                            flex: 1,
+                                        }}>{props.selectedLabel}</Text>
+                                        <Icon source="chevron-down" size={24} />
+                                    </View>
+                                )}
+                                onSelect={(val) => {dispatch(setLanguageById(val ?? ""))}}
+                                CustomDropdownItem={(props) => (
+                                    <Pressable 
+                                        onPress={() => {
+                                            props.toggleMenu(); 
+                                            props.onSelect?.(props.option.value)
+                                        }}
+                                        style={[
+                                            styles.p2,
+                                        ]}
+                                    >
+                                        <Text>{props.option.label}</Text>
+                                    </Pressable>
+                                )}
+                                
+                                options={languageList.map((lang) => {
+                                    return {
+                                        value: lang.id,
+                                        label: lang.shortName,
+                                    };
+                                })}
+                                value={language.id}
+                            />
+                        </View>
+                    </View>
                 </View>
             </View>
             <View
@@ -56,7 +117,7 @@ export function Profile(){
             >
                 <Text 
                     variant="labelMedium" 
-                    style={[styles.textCenter]}
+                    style={[styles.textCenter, styles.fwBold]}
                 >
                     Version 1.0.0 - (15.10.2024)
                 </Text>

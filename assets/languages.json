@@ -1,0 +1,14 @@
+[
+    {
+        "id": "en",
+        "name": "English",
+        "shortName": "EN",
+        "icon": "🇺🇸"
+    },
+    {
+        "id": "id",
+        "name": "Bahasa Indonesia",
+        "shortName": "ID",
+        "icon": "🇮🇩"
+    }
+]
