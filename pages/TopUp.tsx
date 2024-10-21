@@ -52,6 +52,7 @@ function TopUpBody(isLoading: boolean, cardItems: CardItem[] | null = null){
             {
                 cardItems?.map((val) => (
                     <PriceCard 
+                        key={`topup-${val.amount}`}
                         amount={val.amount}
                         onPress={val.onPress}
                         subtitle={val.subtitle}

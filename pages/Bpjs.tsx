@@ -65,6 +65,7 @@ function BpjsBuyBody(targId: string, isLoading: boolean, cardItems: CardItem[] |
             {
                 cardItems?.map((val) => (
                     <PriceCard 
+                        key={`bpjs-${val.amount}`}
                         amount={val.amount}
                         onPress={val.onPress}
                         subtitle={val.subtitle}

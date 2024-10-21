@@ -1,11 +1,11 @@
-import { transaction } from "@api";
+import { cancelTransaction, transaction } from "@api";
 import { PageIndex } from "@libs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { routeList, RouteStackParamList } from "@shared";
 import styles from "@styles";
 import { useEffect, useRef, useState } from "react";
-import { ColorValue, Pressable, TextInput, View } from "react-native";
-import { ActivityIndicator, Text } from "react-native-paper";
+import { ColorValue, Keyboard, Pressable, TextInput, View } from "react-native";
+import { ActivityIndicator, Icon, IconButton, Text } from "react-native-paper";
 
 const pageName = routeList.pin;
 type PinProps = NativeStackScreenProps<RouteStackParamList, typeof pageName>;
@@ -26,6 +26,15 @@ export function Pin(props: PinProps){
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
     const ref = useRef<TextInput>(null);
+
+    useEffect(() => {
+        ref.current?.focus();
+
+        // reset current attempt when the page is unmounted, will clash with transaction function tho, whatever.
+        return () => {
+            cancelTransaction();
+        }
+    }, [])
     
     useEffect(() => {
         const tryTransaction = async () => {
@@ -63,7 +72,10 @@ export function Pin(props: PinProps){
             <Text variant="labelLarge">{isError ? "PIN salah, mohon coba lagi" : "Masukkan PIN aplikasi Anda"}</Text>
 
             <Pressable
-                onPress={() => {ref.current?.focus(); console.log(ref);}}
+                onPress={() => {
+                    ref.current?.blur();
+                    ref.current?.focus();
+                }}
                 focusable={false}
                 style={[
                     styles.flexHorizontal,
@@ -92,10 +104,13 @@ export function Pin(props: PinProps){
                 ref={ref}
                 onChangeText={pin.length === 6 ? undefined : setPin}
                 inputMode="numeric"
+                showSoftInputOnFocus={true}
+                value={pin}
                 autoFocus={true}
                 maxLength={6}
                 style={{
-                    width: 0,
+                    width: 10,
+                    opacity: 0,
                 }}
             />
         </View>
@@ -106,6 +121,6 @@ export default {
     name: pageName,
     component: Pin,
     headerOptions: {
-        title: "Verifikasi PIN"
+        title: "Verifikasi PIN",
     }
 } as PageIndex<typeof pageName>;

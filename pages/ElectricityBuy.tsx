@@ -65,6 +65,7 @@ function ElectricityBuyBody(targId: string, isLoading: boolean, cardItems: CardI
             {
                 cardItems?.map((val) => (
                     <PriceCard 
+                        key={`electricity-${val.amount}`}
                         amount={val.amount}
                         onPress={val.onPress}
                         subtitle={val.subtitle}
