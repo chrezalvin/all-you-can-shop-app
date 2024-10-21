@@ -18,10 +18,10 @@ export function Splash(props: SplashNavProps){
     useEffect(() => {
         value.value = withRepeat(withTiming(1, {duration: 1000}), -1, true);
 
-        // go to home in 3 seconds
+        // go to home in 2 seconds
         setTimeout(() => {
             props.navigation.replace("navs", {screen: "home"});
-        }, 0);
+        }, 2000);
     }, [])
 
     const animatedStyle = useAnimatedStyle(() => {
