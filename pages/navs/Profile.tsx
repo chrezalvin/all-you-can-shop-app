@@ -35,18 +35,25 @@ export function Profile(){
                 <Text style={[styles.fwBold]} variant="titleSmall">00000045606</Text>
                 <Text variant="labelMedium">(24 September 2001)</Text>
             </View>
-            <View style={[styles.flexHorizontal, styles.justifyCenter]}>
+            <View style={[
+                styles.flexVertical, 
+                styles.alignItemsCenter,
+            ]}>
                 <View style={[
+                    styles.flexVertical,
+                    styles.gap0,
                     {
-                        maxWidth: 300
-                    },
-                    styles.containerFill,
+                        width: "100%",
+                        maxWidth: 300,
+                    }
                 ]}>
                     <View style={[
                         styles.flexHorizontal,
                         styles.justifyBetween,
-                        styles.containerFill,
                         styles.py3,
+                        {
+                            height: 50,
+                        }
                     ]}>
                         <Text variant="labelLarge">Dark Mode</Text>
                         <Switch value={isDark} onValueChange={() => {dispatch(toggle())}} />
@@ -54,7 +61,6 @@ export function Profile(){
                     <View style={[
                         styles.flexHorizontal,
                         styles.justifyBetween,
-                        styles.containerFill,
                         styles.py3,
                     ]}>
                         <Text variant="labelLarge">Language</Text>
@@ -64,7 +70,7 @@ export function Profile(){
                             <Dropdown
                                 mode="flat"
                                 statusBarHeight={50}
-                                maxMenuHeight={50}
+                                maxMenuHeight={100}
                                 hideMenuHeader={true}
                                 CustomDropdownInput={(props) => (
                                     <View style={[

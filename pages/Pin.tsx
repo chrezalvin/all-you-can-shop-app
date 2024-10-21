@@ -1,11 +1,11 @@
-import { transaction } from "@api";
+import { cancelTransaction, transaction } from "@api";
 import { PageIndex } from "@libs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { routeList, RouteStackParamList } from "@shared";
 import styles from "@styles";
 import { useEffect, useRef, useState } from "react";
 import { ColorValue, Keyboard, Pressable, TextInput, View } from "react-native";
-import { ActivityIndicator, Text } from "react-native-paper";
+import { ActivityIndicator, Icon, IconButton, Text } from "react-native-paper";
 
 const pageName = routeList.pin;
 type PinProps = NativeStackScreenProps<RouteStackParamList, typeof pageName>;
@@ -29,6 +29,11 @@ export function Pin(props: PinProps){
 
     useEffect(() => {
         ref.current?.focus();
+
+        // reset current attempt when the page is unmounted, will clash with transaction function tho, whatever.
+        return () => {
+            cancelTransaction();
+        }
     }, [])
     
     useEffect(() => {
@@ -116,6 +121,6 @@ export default {
     name: pageName,
     component: Pin,
     headerOptions: {
-        title: "Verifikasi PIN"
+        title: "Verifikasi PIN",
     }
 } as PageIndex<typeof pageName>;

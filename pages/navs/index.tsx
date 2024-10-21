@@ -24,6 +24,7 @@ export function Navs(props: NavProps){
             }}
         >
             <Tab.Screen 
+                key="home"
                 name="home" 
                 component={Home} 
                 options={{
@@ -31,6 +32,7 @@ export function Navs(props: NavProps){
                 }}
             />
             <Tab.Screen 
+                key="history"
                 name="history" 
                 component={History} 
                 options={{
@@ -38,6 +40,7 @@ export function Navs(props: NavProps){
                 }}
             />
             <Tab.Screen 
+                key="profile"
                 name="profile" 
                 component={Profile} 
                 options={{
